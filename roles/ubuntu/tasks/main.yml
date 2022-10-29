@@ -1,0 +1,39 @@
+---
+
+- hosts: all
+  become:
+  pre_tasks:
+
+
+  - name: update repository index (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+
+  - name: install updates (Ubuntu)
+    tags: always
+    become: yes
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: ubuntu
+  become: true
+  roles:
+    - ubuntu
+
+- hosts: centos
+  become: true
+  roles:
+    -centos
+    
+  

@@ -1,0 +1,79 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: epel-release download
+    yum:
+      name:
+        - epel-release
+    when: ansible_distribution == "CentOS"
+
+  - name: Update and Upgrade (CentOS Server)
+    yum:
+      update_cache: yes
+      update_only: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Update and Upgrade (Ubuntu Sever)
+    apt:
+      update_cache: yes
+      upgrade: dist
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: ubuntu
+  become: true
+  tasks:
+
+  - name: Installing Elastic Stack (Ubuntu Server)
+    apt:
+      name:
+        - elasticsearch
+        - kibana
+        - logstash
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Installing Elastic Stack (CentOS Server)
+    dnf:
+      name:
+        - elasticsearch
+        - kibana
+        - logstash
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: centos
+  become: true
+  tasks:
+
+  - name: Installing Elastic Stack (Ubuntu Server)
+    apt:
+      name:
+        - elasticsearch
+        - kibana
+        - logstash
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Installing Elastic Stack (CentOS Server)
+    dnf:
+      name:
+        - elasticsearch
+        - kibana
+        - logstash
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+ 
+
+
+
+
+
+
+
